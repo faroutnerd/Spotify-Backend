@@ -40,12 +40,24 @@ const listSong = async (req, res) => {
 }
 
 const removeSong = async (req, res) => {
-    try {
-        await songModel.findByIdAndDelete(req.body.id);
-        res.json({ success: true, message: "Song removed" });
-    } catch (error) {
-        res.json({success:false, message:`cannot able to remove song: ${error}`})
+    const { id } = req.body;
+
+    if (!id) {
+        return res.status(400).json({ success: false, message: "Song ID is required" });
     }
-}
+
+    try {
+        const deletedSong = await songModel.findByIdAndDelete(id);
+
+        if (!deletedSong) {
+            return res.status(404).json({ success: false, message: "Song not found" });
+        }
+
+        res.status(200).json({ success: true, message: "Song removed successfully" });
+    } catch (error) {
+        console.error("Error removing song:", error);
+        res.status(500).json({ success: false, message: "Failed to remove song", error: error.message });
+    }
+};
 
 export { addSong, listSong, removeSong };
