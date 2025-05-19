@@ -1,8 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-
-import {connectDB} from './src/config/db.js';
+import connectDB from './src/config/db.js';
 import connectCloudinary from './src/config/cloudinary.js';
 import songRouter from './src/routes/song.route.js';
 import albumRouter from './src/routes/album.route.js';
